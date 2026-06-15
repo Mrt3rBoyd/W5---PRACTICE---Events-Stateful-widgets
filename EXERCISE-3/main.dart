@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:w6_practice/EXERCISE-3/ui/screens/temperature_screen.dart';
 
 import 'ui/screens/welcome_screen.dart';
- 
+
 class TemperatureApp extends StatefulWidget {
   const TemperatureApp({super.key});
 
@@ -12,24 +13,29 @@ class TemperatureApp extends StatefulWidget {
 }
 
 class _TemperatureAppState extends State<TemperatureApp> {
-  
+  bool _start = false;
+
+  void StartCovert() {
+    setState(() {
+      _start = !_start;
+    });
+  }
+
   @override
   Widget build(context) {
-
     return MaterialApp(
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color(0xff16C062),
-                Color(0xff00BCDC),
-              ],
+              colors: [Color(0xff16C062), Color(0xff00BCDC)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const WelcomeScreen(),
+          child: _start
+              ? TemperatureScreen()
+              : WelcomeScreen(start: StartCovert),
         ),
       ),
     );
@@ -37,5 +43,5 @@ class _TemperatureAppState extends State<TemperatureApp> {
 }
 
 void main() {
-  runApp(const TemperatureApp());
+  runApp(TemperatureApp());
 }

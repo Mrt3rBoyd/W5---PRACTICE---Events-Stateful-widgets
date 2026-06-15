@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:w6_practice/EXERCISE-2/data/profile_data.dart';
 
 import '../theme/theme.dart';
 
@@ -7,6 +8,8 @@ class ProfileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profile = ronanProfile;
+
     return Scaffold(
       backgroundColor: AppColors.primary.withAlpha(100),
       appBar: AppBar(
@@ -17,45 +20,45 @@ class ProfileApp extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage(
-                  'assets/images/w8/aang.png'), 
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Ronan OGOR',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+
+      body: ListView(
+        children: [
+          const SizedBox(height: 40),
+
+          CircleAvatar(
+            radius: 60,
+            backgroundImage: AssetImage('assets/images/w8/aang.png'),
+          ),
+
+          const SizedBox(height: 20),
+
+          Column(
+            children: [
+              Text(
+                'Ronan OGOR',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-            const Text(
-              'Flutter Developer',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+
+              const Text(
+                'Flutter Developer',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
-            ),
-            const SizedBox(height: 20),
-            const ProfileTile(
-              icon: Icons.phone,
-              title: "Phone Number",
-              data: "+123 456 7890",
-            ),
-             const ProfileTile(
-              icon: Icons.location_on,
-              title: "Address",
-              data: "Cambodia",
-            ),
-          ],
-        ),
+              SizedBox(height: 20),
+
+              ...profile.tiles.map((tile) {
+                return ProfileTile(
+                  icon: tile.icon,
+                  title: tile.title,
+                  data: tile.value,
+                );
+              }).toList(),
+            ],
+          ),
+        ],
       ),
     );
   }
