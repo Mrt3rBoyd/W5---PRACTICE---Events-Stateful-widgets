@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/services/auth_service.dart';
- 
+
 import 'theme.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -20,34 +20,23 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void onLoginPressed() async {
     // Wrap all the code with a try/catch on AuthException: if exception, disaplyer error with the exception
-  
+
     try {
       String name = nameController.text.trim();
       String password = passwordController.text.trim();
-      
+
       if (name.isEmpty || password.isEmpty) {
         setState(() {
           errorMessage = "Name and password shall be entered";
+        });
+        return;
+      }
+    } on AuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
       });
-      return;
     }
 
-      
-
-    } catch {
-
-    }
-   
-
-    // Get the name + password from controllers
-
-    // Validate the name+password => if empty display error :  "Name and password shall be entered"
-    
-    // Call AuthenticationService instance to login
-
-    // Iff success, notify the parent (use the callback) and refresh the state
-
-    // If failure disaply the error and refresh
    
   }
 

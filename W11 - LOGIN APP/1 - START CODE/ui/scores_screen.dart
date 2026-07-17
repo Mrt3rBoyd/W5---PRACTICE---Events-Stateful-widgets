@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
- 
+import 'package:w6_practice/W11%20-%20LOGIN%20APP/1%20-%20START%20CODE/data/repositories/scores_repository.dart';
+import 'package:w6_practice/W11%20-%20LOGIN%20APP/1%20-%20START%20CODE/data/services/auth_service.dart';
+
 import '../model/score.dart';
 
 class ScoresScreen extends StatefulWidget {
@@ -16,32 +18,52 @@ class _ScoresScreenState extends State<ScoresScreen> {
   @override
   void initState() {
     super.initState();
- 
+
     fetchSCores();
   }
 
   void fetchSCores() async {
+    // Ask the ScoresRepository instance to fetch the scores
 
-    // Ask the ScoresRepository instance to fetch the scores 
-    
     // if succes, update the scores list and refresh
     // If failure, update the error and refresh
+    try {
+      List<Score> fetchScores = await ScoresRepository.instance.getSCores();
+      setState(() {
+        scores = fetchScores;
+        error = null;
+      });
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+      });
+    }
   }
 
   String? get userName {
-   
     // Ask the AuthenticationService instance the current user nale (if any)
-
-    return null;
+    return AuthenticationService.instance.session?.user.name;   
   }
 
   Widget get content {
-
     // If scores list => dispaly the list using the ScoreTile
+    if (scores != null ){
+      return ListView.builder(
+        itemCount: scores!.length,
+        itemBuilder: (context, index){
+          return ScoreTile(score:  scores![index]);
+        }
+      );
+    }
 
     // if error, dispaly the erro in red, centered
+    if (error != null ){
+      return Text(
+        error!, style: const TextStyle(color: Colors.red),
+      );
+    }
 
-    // otherwise, we disaply the  CircularProgressIndicator 
+    // otherwise, we disaply the  CircularProgressIndicator
     return CircularProgressIndicator();
   }
 
